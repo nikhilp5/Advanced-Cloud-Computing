@@ -1,0 +1,24 @@
+
+services:
+  container1:
+    image: nk561034/container-1-app
+    container_name: app-1
+    volumes:
+    - .:/files/a1
+    ports:
+    - '6000:6000'
+    networks:
+      - common-network
+    depends_on:
+      - container2
+  container2:
+    image: nk561034/container-2-app
+    container_name: app-2
+    volumes:
+    - .:/files/a1
+    networks:
+      - common-network
+
+networks:
+  common-network:
+    name: common-network

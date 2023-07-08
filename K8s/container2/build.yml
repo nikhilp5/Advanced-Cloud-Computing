@@ -1,0 +1,31 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    id: build-image-id
+    args:
+      - "build"
+      - "-t"
+      - "northamerica-northeast1-docker.pkg.dev/kubernetes-5409/docker-container/container-2-image"
+      - "."
+  - name: "gcr.io/cloud-builders/docker"
+    id: push-image-id
+    args:
+      - "push"
+      - "northamerica-northeast1-docker.pkg.dev/kubernetes-5409/docker-container/container-2-image"
+  - name: "gcr.io/cloud-builders/kubectl"
+    id: run-image-id
+    env:
+      - "CLOUDSDK_CONTAINER_CLUSTER=kube-cluster"
+      - "CLOUDSDK_COMPUTE_ZONE=northamerica-northeast1-a"
+    args:
+      - "apply"
+      - "-f"
+      - "deploy.yml"
+  - name: "gcr.io/cloud-builders/kubectl"
+    id: rollout-image-id
+    env:
+      - "CLOUDSDK_CONTAINER_CLUSTER=kube-cluster"
+      - "CLOUDSDK_COMPUTE_ZONE=northamerica-northeast1-a"
+    args:
+      - "rollout"
+      - "restart"
+      - "deployment/image-pod-2"
