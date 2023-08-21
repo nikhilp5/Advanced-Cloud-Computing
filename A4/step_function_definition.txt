@@ -1,0 +1,46 @@
+{
+  "Comment": "Hashing State Machine",
+  "StartAt": "EvaluateChoice",
+  "States": {
+    "EvaluateChoice": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.action",
+          "StringEquals": "sha256",
+          "Next": "InvokeSHA256Lambda"
+        },
+        {
+          "Variable": "$.action",
+          "StringEquals": "md5",
+          "Next": "InvokeMD5Lambda"
+        },
+        {
+          "Variable": "$.action",
+          "StringEquals": "bcrypt",
+          "Next": "InvokeBCryptLambda"
+        }
+      ],
+      "Default": "End"
+    },
+    "InvokeSHA256Lambda": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:574531681585:function:sha256",
+      "End": true
+    },
+    "InvokeMD5Lambda": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:574531681585:function:md5",
+      "End": true
+    },
+    "InvokeBCryptLambda": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:574531681585:function:bcrypt",
+      "End": true
+    },
+    "End": {
+      "Type": "Pass",
+      "End": true
+    }
+  }
+}
